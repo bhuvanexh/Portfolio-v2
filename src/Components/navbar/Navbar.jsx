@@ -66,11 +66,14 @@ const Navbar = () => {
         }
     };
 
+
+    const [linkActive, setLinkActive] = useState(null)
+
     const links = [
-        { title: 'Contact', url: '' },
-        { title: 'Details', url: '' },
+        { title: 'Contact', url: '/contact' },
+        { title: 'Details', url: '/details' },
         { title: 'About', url: '#about' },
-        { title: 'Project', url: '#projects' }
+        { title: 'Projects', url: '#projects' }
     ];
 
     const navVariants = {
@@ -79,9 +82,7 @@ const Navbar = () => {
     };
 
 
-    let topPosn = isHeightLessThan650 ? 'md:top-7' : 'md:top-14'
 
-    let logoClasses = `fixed top-7 md:left-7 md:top-14 z-50 ${topPosn}`
 
 
     let hambDisplay = isHeightLessThan650 ? 'md:block' : 'md:hidden'
@@ -89,10 +90,17 @@ const Navbar = () => {
     let hambClasses = `fixed top-4 right-4 z-50 block ${hambDisplay}`
 
 
+    let display = !isHeightLessThan650 ? 'md:flex' : 'md:hidden'
+
+    let classes = `${display} hidden items-center relative cursor-pointer w-[100px] h-[60px] overflow-hidden`
+
+
+    let display2 = isHeightLessThan650 ? 'md:flex md:top-[-42px]' : 'md:hidden'
+    let classes2 = `${display2} flex left-5 top-[-16px] justify-center relative cursor-pointer overflow-hidden`
     return (
         <>
-            <div className={logoClasses}>
-                <motion.div className='flex items-center relative cursor-pointer w-[100px] h-[60px] overflow-hidden'
+            <div className='fixed top-7 md:top-14 md:left-7 z-50'>
+                <motion.div className={classes}
                     onMouseEnter={() => setHovered(true)}
                     onMouseLeave={() => setHovered(false)}
                     ref={scope}
@@ -109,9 +117,12 @@ const Navbar = () => {
                                 <text textAnchor="middle" x="50" y="45" dy="1" fontSize="55" className='comic' fontWeight={600}>B</text>
                             </mask>
                         </defs>
-                        <rect x="0" y="0" width="100%" height="100%" mask="url(#mask)" fill="#111111" />
+                        <rect x="0" y="0" width="100%" height="100%" mask="url(#mask)" fill="#050304" />
                     </svg>
                 </motion.div>
+                <div onClick={handleClick} className={classes2}>
+                    <span className='comic block text-[55px] font-semibold text-white'>B</span>
+                </div>
             </div>
             <nav className='leftNav fixed hidden md:flex h-[100vh] w-[150px] z-20 left-0 top-0 justify-center items-center pt-12 pb-14'>
                 <div className='flex flex-col h-[100%] gap-3 justify-between items-center pt-[100px]'>
@@ -119,7 +130,7 @@ const Navbar = () => {
                     <div className='flex items-center justify-center'>
                         <ul className='writingMode rotate-180 flex items-center gap-3 font-semibold tracking-wide text-[#c4c0c0]'>
                             {links.map((link, index) => {
-                                return <NavList title={link.title} key={index} url={link.url} horizontal={false} />
+                                return <NavList linkActive={linkActive} title={link.title} key={index} url={link.url} horizontal={false} />
                             })}
                         </ul>
                     </div>
@@ -217,7 +228,7 @@ const Navbar = () => {
                     </motion.nav>
                 )}
             </AnimatePresence>
-            <Outlet />
+            <Outlet context={{ setLinkActive, linkActive }} />
         </>
     )
 }

@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { motion, useAnimate } from "framer-motion"
-const NavList = ({ setNavShow, url, title, horizontal }) => {
+import { useLocation, useNavigate } from 'react-router-dom'
+const NavList = ({ linkActive, setNavShow, url, title, horizontal }) => {
     const [isHovered, setHovered] = useState(null)
     const [scope, animate] = useAnimate()
 
+    const location = useLocation()
     useEffect(() => {
         const animateFilm = async () => {
-            if (isHovered) {
+            if (isHovered || linkActive == title) {
                 if (!horizontal) {
                     await animate(".film2", {
                         transformOrigin: "50% 100%"
@@ -29,7 +31,7 @@ const NavList = ({ setNavShow, url, title, horizontal }) => {
                     }, { duration: .4 })
                 }
             }
-            if (isHovered == false) {
+            if ((isHovered == false && linkActive != title) || (isHovered == null && linkActive != title)) {
                 if (!horizontal) {
                     await animate(".film2", {
                         transformOrigin: "50% 0%"
@@ -54,14 +56,43 @@ const NavList = ({ setNavShow, url, title, horizontal }) => {
             }
         }
         animateFilm()
-    }, [isHovered])
+    }, [isHovered, linkActive])
+    const navigate = useNavigate()
+    const handleClick = (e) => {
+        e.preventDefault();
+        if (url[0] != '/') {
 
+            if (location.pathname == '/') {
+                const targetElement = document.querySelector(url);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+            else {
+                navigate(`/?${url}`)
+            }
+        } else {
+            navigate(url)
+        }
+        if (setNavShow) {
+            setNavShow(false);
+        }
+    };
+    useEffect(() => {
+        if (location.pathname == '/' && location.hash) {
+            const targetElement = document.querySelector(location.hash);
+            if (targetElement) {
+                targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+    }, [location])
 
     return (
-        <motion.li className='relative flex items-center py-[10px]'
+        <motion.li className='relative flex items-center py-[10px] cursor-pointer'
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
             ref={scope}
+            onClick={handleClick}
         >
             {horizontal && <motion.span className='block film2 absolute w-[200px] left-[-62px] top-[24px] h-[4px] bg-[#00EEFF]'
                 initial={{ scaleX: 0 }}
@@ -69,7 +100,7 @@ const NavList = ({ setNavShow, url, title, horizontal }) => {
             {!horizontal && <motion.span className='block film2 absolute w-[3px] left-[8px] bottom-0 h-full bg-[#00EEFF]'
                 initial={{ scaleY: 0 }}
             ></motion.span>}
-            <a onClick={() => setNavShow(false)} href={url}>
+            <a>
                 {title}
             </a>
         </motion.li>

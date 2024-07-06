@@ -72,7 +72,7 @@
     /* Adjust the size of the cut corner */
     height: 20px;
     /* Adjust the size of the cut corner */
-    background-color: #111111;
+    background-color: #050304;
     transform: translateX(50%) translateY(50%) rotate(135deg);
     z-index: 1;
 }
@@ -128,7 +128,9 @@
     transform: rotate(-135deg);
 }
 
-
+.clipPath {
+    clip-path: polygon(0 -1px, 100% -1px, calc(100% - 10px) 100%, 10px 100%);
+}
 
 
 @media (max-height: 650px) {
