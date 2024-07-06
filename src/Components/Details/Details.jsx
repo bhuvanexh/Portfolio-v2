@@ -35,11 +35,14 @@ const Details = () => {
                 <div className='flex flex-col md:flex-row gap-20 md:gap-8 lg:gap-16 items-center py-10'>
                     <FadeInDiv
                         element={
-                            <span className='text-[#00EEFF] cursor-pointer text-xl lg:text-2xl'>
-                                <a className='flex items-center gap-2' href={resume} download="BhuvaneshChoudharyResume.pdf">
-                                    {`> My Resume`} <FaFileDownload />
-                                </a>
-                            </span>
+                            <>
+                                <h3 className='text-slate-400 mb-1'>Download</h3>
+                                <span className='text-[#00EEFF] cursor-pointer text-xl lg:text-2xl'>
+                                    <a className='flex items-center gap-2' href={resume} download="BhuvaneshChoudharyResume.pdf">
+                                        {`> My Resume`} <FaFileDownload />
+                                    </a>
+                                </span>
+                            </>
                         }
                     />
                     <FadeInDiv
